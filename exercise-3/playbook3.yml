@@ -1,0 +1,14 @@
+- name: update and upgrade APT packages
+  hosts: web01
+  become: yes
+ 
+  tasks:
+   - name: Create a new directory
+     file:
+        path: "/tmp/Desktop"
+        state: directory
+   - name: 'installing zlib using apt'
+     apt:
+       name: zlib1g
+       state: present 
+       

@@ -1,0 +1,10 @@
+- name: creating new directory
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Create a new directory
+      file:
+        path: "/tmp/den"
+        state: directory
+      when: ansible_distribution == 'Ubuntu'     
