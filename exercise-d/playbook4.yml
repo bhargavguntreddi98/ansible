@@ -1,0 +1,56 @@
+- name: website deployment
+  hosts: all
+  tasks:
+
+   - name: 'installing apache2 server'
+     apt: 
+      name: apache2  
+      state: present
+     when: ansible_distribution == 'Ubuntu'
+
+   - name: 'installing httpd server'
+     yum:
+      name: httpd
+      state: present
+     when: ansible_distribution == 'CentOS'
+
+   - name: 'installing unzip server'
+     apt:
+      name: unzip
+      state: present
+     when: ansible_distribution == 'Ubuntu' 
+
+   - name: 'installing unzip server'
+     yum:
+      name: unzip
+      state: present
+     when: ansible_distribution == 'CentOS'    
+
+   - name: 'Downloading package file'
+     get_url:
+      url: https://templatemo.com/tm-zip-files-2020/templatemo_590_topic_listing.zip
+      dest: /opt
+
+   - name: 'unzipping package file' 
+     unarchive:
+       src: /opt/templatemo_590_topic_listing.zip   
+       dest: /opt
+       remote_src: yes
+        
+   - name: 'copying file'
+     copy:
+       src: /opt/templatemo_590_topic_listing/
+       dest: /var/www/html/
+       remote_src: yes 
+       
+   - name: 'starting apache server'
+     service:
+      name: apache2
+      state: restarted    
+     when: ansible_distribution == 'Ubuntu'   
+   
+   - name: 'starting httpd server'
+     service:
+      name: httpd
+      state: restarted
+     when: ansible_distribution == 'CentOS'
